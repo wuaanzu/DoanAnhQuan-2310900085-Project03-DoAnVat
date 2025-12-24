@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{layout/admin-layout :: head}"></head>
+
+<body>
+    <!-- Sidebar -->
+    <div th:replace="~{layout/fragments/daq-admin-nav :: sidebar}"></div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Top Navbar -->
+        <div th:replace="~{layout/fragments/daq-admin-nav :: navbar}"></div>
+
+        <!-- Content Area -->
+        <main class="content-area">
+            <!-- Page Header -->
+            <div class="mb-4">
+                <h1 class="h3 fw-bold text-dark">Quản lý Sản phẩm</h1>
+                <p class="text-muted">Danh sách tất cả sản phẩm đồ ăn vặt</p>
+            </div>
+
+            <!-- Alert Messages -->
+            <div th:if="${success}" class="alert alert-success alert-dismissible fade show" role="alert">
+                <i class="fas fa-check-circle"></i>
+                <span th:text="${success}"></span>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+            <div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert">
+                <i class="fas fa-exclamation-circle"></i>
+                <span th:text="${error}"></span>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+
+            <!-- Action Bar -->
+            <div class="card mb-4">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="text-muted">
+                            Tổng số: <strong th:text="${#lists.size(products)}">0</strong> sản phẩm
+                        </div>
+                        <a href="/admin/daqProducts/create" class="btn btn-primary">
+                            <i class="fas fa-plus"></i>
+                            Thêm sản phẩm mới
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Products Table -->
+            <div class="card">
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th style="width: 80px;">ID</th>
+                                    <th style="width: 100px;">Hình ảnh</th>
+                                    <th>Tên sản phẩm</th>
+                                    <th>Danh mục</th>
+                                    <th style="width: 120px;">Giá</th>
+                                    <th style="width: 100px;">Số lượng</th>
+                                    <th style="width: 180px;">Thao tác</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="product : ${products}">
+                                    <td th:text="${product.productId}">1</td>
+                                    <td>
+                                        <img th:if="${product.image != null}" th:src="@{'/uploads/' + ${product.image}}"
+                                            alt="Product" class="img-thumbnail"
+                                            style="width: 60px; height: 60px; object-fit: cover;">
+                                        <span th:if="${product.image == null}" class="text-muted">
+                                            <i class="fas fa-image fa-2x"></i>
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span class="fw-medium" th:text="${product.productName}">Bánh snack</span>
+                                        <br>
+                                        <small class="text-muted" th:text="${product.description}">Mô tả sản
+                                            phẩm...</small>
+                                    </td>
+                                    <td>
+                                        <span class="badge bg-warning text-dark"
+                                            th:text="${product.category != null ? product.category.categoryName : 'N/A'}">
+                                            Snack
+                                        </span>
+                                    </td>
+                                    <td class="fw-bold text-danger">
+                                        <span
+                                            th:text="${#numbers.formatDecimal(product.price, 0, 'COMMA', 0, 'POINT')}">25,000</span>
+                                        đ
+                                    </td>
+                                    <td>
+                                        <span th:text="${product.quantity}">100</span>
+                                    </td>
+                                    <td>
+                                        <a th:href="@{'/admin/daqProducts/edit/' + ${product.productId}}"
+                                            class="btn btn-sm btn-outline-primary">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <a th:href="@{'/admin/daqProducts/delete/' + ${product.productId}}"
+                                            class="btn btn-sm btn-outline-danger"
+                                            onclick="return confirm('Bạn có chắc muốn xóa sản phẩm này?')">
+                                            <i class="fas fa-trash"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                                <tr th:if="${#lists.isEmpty(products)}">
+                                    <td colspan="7" class="text-center py-5 text-muted">
+                                        <i class="fas fa-inbox fa-3x mb-3 d-block"></i>
+                                        <p>Chưa có sản phẩm nào</p>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <div th:replace="~{layout/fragments/daq-admin-footer :: footer}"></div>
+    </div>
+
+    <!-- Scripts -->
+    <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+    <script th:src="@{/webjars/bootstrap/js/bootstrap.bundle.min.js}"></script>
+</body>
+
+</html>

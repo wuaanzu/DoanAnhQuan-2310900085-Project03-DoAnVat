@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{layout/admin-layout :: head}"></head>
+
+<body>
+    <!-- Sidebar -->
+    <div th:replace="~{layout/fragments/daq-admin-nav :: sidebar}"></div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Top Navbar -->
+        <div th:replace="~{layout/fragments/daq-admin-nav :: navbar}"></div>
+
+        <!-- Content Area -->
+        <main class="content-area">
+            <!-- Page Header -->
+            <div class="mb-4">
+                <div class="mb-2">
+                    <a href="/admin/daqProducts" class="text-decoration-none text-muted">
+                        <i class="fas fa-arrow-left"></i> Quay lại
+                    </a>
+                </div>
+                <h1 class="h3 fw-bold text-dark">Chỉnh sửa Sản phẩm</h1>
+            </div>
+
+            <!-- Form Card -->
+            <div class="card">
+                <div class="card-body">
+                    <form th:action="@{'/admin/daqProducts/edit/' + ${product.productId}}" th:object="${product}"
+                        method="post" enctype="multipart/form-data">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="mb-3">
+                                    <label class="form-label">ID Sản phẩm</label>
+                                    <input type="text" th:value="${product.productId}" class="form-control" disabled>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="productName" class="form-label">
+                                        Tên sản phẩm <span class="text-danger">*</span>
+                                    </label>
+                                    <input type="text" id="productName" name="productName"
+                                        th:value="${product.productName}" class="form-control" required
+                                        placeholder="Nhập tên sản phẩm...">
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="categoryId" class="form-label">
+                                        Danh mục <span class="text-danger">*</span>
+                                    </label>
+                                    <select id="categoryId" name="categoryId" class="form-select" required>
+                                        <option value="">-- Chọn danh mục --</option>
+                                        <option th:each="category : ${categories}" th:value="${category.categoryId}"
+                                            th:text="${category.categoryName}"
+                                            th:selected="${product.category != null && product.category.categoryId == category.categoryId}">
+                                        </option>
+                                    </select>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="price" class="form-label">
+                                                Giá (VNĐ) <span class="text-danger">*</span>
+                                            </label>
+                                            <input type="number" id="price" name="price" th:value="${product.price}"
+                                                class="form-control" required min="0" step="1000">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="quantity" class="form-label">
+                                                Số lượng <span class="text-danger">*</span>
+                                            </label>
+                                            <input type="number" id="quantity" name="quantity"
+                                                th:value="${product.quantity}" class="form-control" required min="0">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="description" class="form-label">Mô tả</label>
+                                    <textarea id="description" name="description" class="form-control" rows="4"
+                                        th:text="${product.description}"
+                                        placeholder="Nhập mô tả sản phẩm..."></textarea>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label class="form-label">Hình ảnh hiện tại</label>
+                                    <div th:if="${product.image != null}" class="mb-2">
+                                        <img th:src="@{'/uploads/' + ${product.image}}" alt="Current Image"
+                                            class="img-thumbnail" style="max-width: 100%; max-height: 200px;">
+                                    </div>
+                                    <div th:if="${product.image == null}" class="text-muted">
+                                        <i class="fas fa-image fa-3x"></i>
+                                        <p>Chưa có ảnh</p>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="imageFile" class="form-label">Thay đổi hình ảnh</label>
+                                    <input type="file" id="imageFile" name="imageFile" class="form-control"
+                                        accept="image/*" onchange="previewImage(event)">
+                                    <div class="form-text">Để trống nếu không muốn thay đổi</div>
+                                </div>
+
+                                <div id="imagePreview" class="mt-3 text-center" style="display: none;">
+                                    <img id="preview" src="" alt="Preview" class="img-thumbnail"
+                                        style="max-width: 100%; max-height: 300px;">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="d-flex gap-2 mt-4">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save"></i> Cập nhật
+                            </button>
+                            <a href="/admin/daqProducts" class="btn btn-secondary">
+                                <i class="fas fa-times"></i> Hủy
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <div th:replace="~{layout/fragments/daq-admin-footer :: footer}"></div>
+    </div>
+
+    <!-- Scripts -->
+    <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+    <script th:src="@{/webjars/bootstrap/js/bootstrap.bundle.min.js}"></script>
+    <script>
+        function previewImage(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    document.getElementById('preview').src = e.target.result;
+                    document.getElementById('imagePreview').style.display = 'block';
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+    </script>
+</body>
+
+</html>

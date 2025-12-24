@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head th:fragment="head">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${pageTitle != null ? pageTitle + ' - Quản Trị Miki Food' : 'Quản Trị Miki Food'}">Quản Trị Miki
+        Food</title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" th:href="@{/webjars/font-awesome/css/all.min.css}">
+
+    <!-- Custom CSS -->
+    <style>
+        :root {
+            --sidebar-width: 250px;
+            --primary-orange: #f97316;
+            --primary-orange-dark: #ea580c;
+        }
+
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            width: var(--sidebar-width);
+            background: linear-gradient(180deg, #f97316 0%, #ea580c 100%);
+            z-index: 1000;
+            overflow-y: auto;
+        }
+
+        .sidebar-brand {
+            padding: 1.5rem 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+
+        .sidebar-nav {
+            padding: 1rem 0.5rem;
+        }
+
+        .sidebar-nav .nav-link {
+            color: rgba(255, 255, 255, 0.9);
+            padding: 0.75rem 1rem;
+            margin-bottom: 0.25rem;
+            border-radius: 0.5rem;
+            transition: all 0.3s;
+        }
+
+        .sidebar-nav .nav-link:hover,
+        .sidebar-nav .nav-link.active {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+
+        .sidebar-nav .nav-link i {
+            width: 20px;
+            margin-right: 0.5rem;
+        }
+
+        .main-content {
+            margin-left: var(--sidebar-width);
+            min-height: 100vh;
+        }
+
+        .top-navbar {
+            background-color: white;
+            border-bottom: 1px solid #dee2e6;
+            padding: 1rem 1.5rem;
+        }
+
+        .content-area {
+            padding: 1.5rem;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-orange);
+            border-color: var(--primary-orange);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-orange-dark);
+            border-color: var(--primary-orange-dark);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Sidebar - Using Fragment -->
+    <div th:replace="~{layout/fragments/daq-admin-nav :: sidebar}"></div>
+
+    <!-- Main Content Wrapper -->
+    <div class="main-content">
+        <!-- Top Navbar - Using Fragment -->
+        <div th:replace="~{layout/fragments/daq-admin-nav :: navbar}"></div>
+
+        <!-- Content Area -->
+        <main th:fragment="content" class="content-area">
+            <!-- Content will be inserted here -->
+        </main>
+
+        <!-- Footer - Using Fragment -->
+        <div th:replace="~{layout/fragments/daq-admin-footer :: footer}"></div>
+    </div>
+
+    <!-- jQuery -->
+    <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+
+    <!-- Bootstrap JS -->
+    <script th:src="@{/webjars/bootstrap/js/bootstrap.bundle.min.js}"></script>
+</body>
+
+</html>

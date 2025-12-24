@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<!-- Admin Sidebar Navigation -->
+<aside th:fragment="sidebar" class="sidebar">
+    <!-- Brand -->
+    <div class="sidebar-brand d-flex align-items-center">
+        <i class="fas fa-utensils fs-4 me-2"></i>
+        <span class="fs-5 fw-bold">Miki Food Admin</span>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="sidebar-nav">
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <a href="/admin/dashboard" class="nav-link">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a href="/admin/daqProducts" class="nav-link">
+                    <i class="fas fa-cookie-bite"></i>
+                    <span>Sản phẩm</span>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a href="/admin/daqCategories" class="nav-link">
+                    <i class="fas fa-list"></i>
+                    <span>Danh mục</span>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a href="/admin/daqOrders" class="nav-link">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span>Đơn hàng</span>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a href="/admin/daqStaff" class="nav-link">
+                    <i class="fas fa-user-tie"></i>
+                    <span>Nhân viên & Khách hàng</span>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <hr class="text-white-50 my-3">
+            </li>
+
+            <li class="nav-item">
+                <a href="/home" class="nav-link">
+                    <i class="fas fa-home"></i>
+                    <span>Về trang chủ</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</aside>
+
+<!-- Top Navbar -->
+<nav th:fragment="navbar" class="top-navbar d-flex justify-content-between align-items-center">
+    <div class="text-muted">
+        Xin chào, <strong class="text-dark">Admin</strong>
+    </div>
+
+    <form th:action="@{/logout}" method="post">
+        <button type="submit" class="btn btn-danger">
+            <i class="fas fa-sign-out-alt"></i>
+            Đăng xuất
+        </button>
+    </form>
+</nav>
+
+</html>
