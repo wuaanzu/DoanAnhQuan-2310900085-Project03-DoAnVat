@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{layout/user-layout :: head}"></head>
+
+<body>
+    <!-- Navbar -->
+    <div th:replace="~{layout/fragments/daq-user-nav :: navbar}"></div>
+
+    <!-- Banner Carousel -->
+    <div id="bannerCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="5000"
+        th:if="${banners != null and !#lists.isEmpty(banners)}">
+        <div class="carousel-indicators">
+            <button th:each="banner, iterStat : ${banners}" type="button" data-bs-target="#bannerCarousel"
+                th:attr="data-bs-slide-to=${iterStat.index}" th:classappend="${iterStat.index == 0} ? 'active' : ''"
+                th:aria-current="${iterStat.index == 0} ? 'true' : 'false'"></button>
+        </div>
+        <div class="carousel-inner">
+            <div th:each="banner, iterStat : ${banners}" class="carousel-item"
+                th:classappend="${iterStat.index == 0} ? 'active' : ''">
+                <a th:href="${banner.linkUrl != null} ? ${banner.linkUrl} : '#'">
+                    <div class="banner-container">
+                        <img th:if="${banner.image != null}" th:src="@{'/uploads/' + ${banner.image}}"
+                            class="banner-image" th:alt="${banner.title}">
+                        <img th:if="${banner.image == null}"
+                            src="https://via.placeholder.com/1200x400/FF6B6B/FFFFFF?text=MIKI+FOOD+BANNER"
+                            class="banner-image" alt="Banner">
+                    </div>
+                    <div class="carousel-caption">
+                        <div class="caption-content">
+                            <h2 class="fw-bold mb-2" th:text="${banner.title}">Banner Title</h2>
+                            <p class="lead mb-0" th:text="${banner.description}">Banner Description</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#bannerCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#bannerCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container my-5">
+        <div class="text-center mb-5 animate-fade-in">
+            <!-- Search Result Header -->
+            <div th:if="${keyword != null and !keyword.isEmpty()}" class="mb-4">
+                <h2 class="display-6 fw-bold" style="color: var(--primary-color);">
+                    <i class="fas fa-search"></i> Kết quả tìm kiếm: "<span th:text="${keyword}"></span>"
+                </h2>
+                <p class="text-muted">
+                    Tìm thấy <strong th:text="${searchResultCount}">0</strong> sản phẩm
+                </p>
+            </div>
+
+            <!-- Default Header -->
+            <div th:if="${keyword == null or keyword.isEmpty()}">
+                <h2 class="display-5 fw-bold" style="color: var(--primary-color);">
+                    <i class="fas fa-shopping-bag"></i> Sản phẩm của chúng tôi
+                </h2>
+                <p class="text-muted">Khám phá những món ăn vặt ngon nhất!</p>
+            </div>
+        </div>
+
+        <!-- Products Grid -->
+        <div class="row g-4">
+            <div class="col-lg-3 col-md-4 col-sm-6 animate-fade-in" th:each="product, iterStat : ${products}"
+                th:style="'animation-delay: ' + ${iterStat.index * 0.05} + 's;'">
+                <div class="card snack-card product-card h-100 border-0">
+                    <!-- Product Image -->
+                    <div class="position-relative overflow-hidden">
+                        <img th:if="${product.image != null}" th:src="@{'/uploads/' + ${product.image}}"
+                            class="card-img-top product-img" alt="Product">
+                        <img th:if="${product.image == null}"
+                            src="https://via.placeholder.com/300x200/FFD93D/FFFFFF?text=No+Image"
+                            class="card-img-top product-img" alt="No Image">
+
+                        <!-- Category Badge -->
+                        <span class="product-badge" th:if="${product.category != null}"
+                            th:text="${product.category.categoryName}">
+                            Danh mục
+                        </span>
+
+                        <!-- Stock Badge -->
+                        <span class="stock-badge" th:if="${product.quantity <= 5 and product.quantity > 0}">
+                            Sắp hết!
+                        </span>
+                    </div>
+
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title fw-bold mb-2" th:text="${product.productName}">Tên sản phẩm</h5>
+                        <p class="card-text text-muted small mb-3" th:text="${product.description}">Mô tả</p>
+
+                        <div class="mt-auto">
+                            <!-- Price -->
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h4 class="mb-0 fw-bold" style="color: var(--primary-color);">
+                                    <span th:text="${#numbers.formatDecimal(product.price, 0, 'COMMA', 0, 'POINT')}">
+                                        25,000
+                                    </span>đ
+                                </h4>
+                                <span class="text-muted small">
+                                    <i class="fas fa-box"></i> <span th:text="${product.quantity}">0</span>
+                                </span>
+                            </div>
+
+                            <!-- Action Buttons -->
+                            <div class="d-grid gap-2">
+                                <a th:href="@{'/products/detail/' + ${product.productId}}"
+                                    class="btn btn-snack-primary btn-sm">
+                                    <i class="fas fa-eye"></i> Xem chi tiết
+                                </a>
+                                <!-- Simple link instead of form to avoid CSRF issues -->
+                                <a th:if="${product.quantity > 0}"
+                                    th:href="@{/cart/add(productId=${product.productId}, quantity=1)}"
+                                    class="btn btn-snack-secondary btn-sm">
+                                    <i class="fas fa-cart-plus"></i> Thêm vào giỏ
+                                </a>
+                                <button th:if="${product.quantity == 0}" class="btn btn-secondary btn-sm" disabled>
+                                    <i class="fas fa-times"></i> Hết hàng
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Empty State -->
+        <div th:if="${#lists.isEmpty(products)}" class="text-center py-5 animate-fade-in">
+            <i class="fas fa-box-open fa-5x mb-4" style="color: var(--light-gray);"></i>
+            <div th:if="${keyword != null and !keyword.isEmpty()}">
+                <h4 class="text-muted">Không tìm thấy sản phẩm nào với từ khóa "<span th:text="${keyword}"></span>"</h4>
+                <p class="text-muted">Vui lòng thử từ khóa khác!</p>
+                <a href="/products" class="btn btn-snack-primary mt-3">
+                    <i class="fas fa-arrow-left"></i> Xem tất cả sản phẩm
+                </a>
+            </div>
+            <div th:if="${keyword == null or keyword.isEmpty()}">
+                <h4 class="text-muted">Chưa có sản phẩm nào</h4>
+                <p class="text-muted">Vui lòng quay lại sau!</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div th:replace="~{layout/fragments/daq-user-footer :: footer}"></div>
+
+    <style>
+        /* Banner Carousel Styles */
+        .carousel-fade .carousel-item {
+            opacity: 0;
+            transition: opacity 0.6s ease-in-out;
+        }
+
+        .carousel-fade .carousel-item.active {
+            opacity: 1;
+        }
+
+        /* Flexible Banner Container */
+        .banner-container {
+            position: relative;
+            width: 100%;
+            min-height: 300px;
+            max-height: 500px;
+            overflow: hidden;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .banner-image {
+            width: 100%;
+            height: auto;
+            max-height: 500px;
+            object-fit: contain;
+            object-position: center;
+        }
+
+        .carousel-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 40px 20px;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, transparent 100%);
+            z-index: 10;
+        }
+
+        .caption-content {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Product Card Enhancements */
+        .product-img {
+            height: 220px;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .product-card:hover .product-img {
+            transform: scale(1.15);
+        }
+
+        .stock-badge {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            background: linear-gradient(135deg, #FF6B6B 0%, #FF8787 100%);
+            color: white;
+            padding: 6px 12px;
+            border-radius: var(--radius-full);
+            font-size: 0.75rem;
+            font-weight: 700;
+            box-shadow: var(--shadow-md);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .banner-container {
+                min-height: 200px;
+                max-height: 350px;
+            }
+
+            .banner-image {
+                max-height: 350px;
+            }
+
+            .carousel-caption {
+                padding: 20px 10px;
+            }
+
+            .caption-content h2 {
+                font-size: 1.5rem;
+            }
+
+            .caption-content p {
+                font-size: 0.9rem;
+            }
+
+            .product-img {
+                height: 180px;
+            }
+        }
+    </style>
+
+    <!-- Bootstrap JS -->
+    <script th:src="@{/webjars/bootstrap/js/bootstrap.bundle.min.js}"></script>
+
+    <!-- Initialize Carousel -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var bannerCarousel = document.getElementById('bannerCarousel');
+            if (bannerCarousel) {
+                var carousel = new bootstrap.Carousel(bannerCarousel, {
+                    interval: 5000,
+                    ride: 'carousel',
+                    pause: 'hover',
+                    wrap: true
+                });
+            }
+        });
+    </script>
+</body>
+
+</html>

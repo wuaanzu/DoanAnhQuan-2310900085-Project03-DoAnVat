@@ -41,9 +41,23 @@
             </li>
 
             <li class="nav-item">
+                <a href="/admin/daqOrderDetails" class="nav-link">
+                    <i class="fas fa-clipboard-list"></i>
+                    <span>Chi tiết đơn hàng</span>
+                </a>
+            </li>
+
+            <li class="nav-item">
                 <a href="/admin/daqStaff" class="nav-link">
                     <i class="fas fa-user-tie"></i>
-                    <span>Nhân viên & Khách hàng</span>
+                    <span>Quản trị viên</span>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a href="/admin/daqBanner" class="nav-link">
+                    <i class="fas fa-image"></i>
+                    <span>Banner</span>
                 </a>
             </li>
 
@@ -62,9 +76,11 @@
 </aside>
 
 <!-- Top Navbar -->
-<nav th:fragment="navbar" class="top-navbar d-flex justify-content-between align-items-center">
+<nav th:fragment="navbar" class="top-navbar d-flex justify-content-between align-items-center"
+    xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
     <div class="text-muted">
-        Xin chào, <strong class="text-dark">Admin</strong>
+        Xin chào, <strong class="text-dark" sec:authentication="name">Admin</strong>
+        <span class="badge bg-primary ms-2" sec:authentication="principal.authorities">ADMIN</span>
     </div>
 
     <form th:action="@{/logout}" method="post">

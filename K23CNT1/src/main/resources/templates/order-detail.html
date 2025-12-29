@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{layout/user-layout :: head}"></head>
+
+<body>
+    <!-- Navbar -->
+    <div th:replace="~{layout/fragments/daq-user-nav :: navbar}"></div>
+
+    <!-- Main Content -->
+    <div class="container my-5">
+        <div class="mb-4">
+            <a href="/orders/my-orders" class="btn btn-outline-secondary">
+                <i class="fas fa-arrow-left"></i> Quay lại
+            </a>
+        </div>
+
+        <h2 class="mb-4">
+            <i class="fas fa-file-invoice"></i> Chi tiết đơn hàng #<span th:text="${order.orderId}">1</span>
+        </h2>
+
+        <div class="row">
+            <!-- Order Info -->
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">Thông tin đơn hàng</h5>
+                    </div>
+                    <div class="card-body">
+                        <p><strong>Mã đơn:</strong> #<span th:text="${order.orderId}">1</span></p>
+                        <p><strong>Ngày đặt:</strong><br>
+                            <span th:text="${#temporals.format(order.orderDate, 'dd/MM/yyyy HH:mm')}">
+                                30/12/2025 10:00
+                            </span>
+                        </p>
+                        <p><strong>Trạng thái:</strong><br>
+                            <span th:if="${order.status == 'Chờ xử lý'}" class="badge bg-warning text-dark">
+                                <i class="fas fa-clock"></i> <span th:text="${order.status}">Chờ xử lý</span>
+                            </span>
+                            <span th:if="${order.status == 'Đang giao'}" class="badge bg-info">
+                                <i class="fas fa-truck"></i> <span th:text="${order.status}">Đang giao</span>
+                            </span>
+                            <span th:if="${order.status == 'Hoàn thành'}" class="badge bg-success">
+                                <i class="fas fa-check"></i> <span th:text="${order.status}">Hoàn thành</span>
+                            </span>
+                            <span th:if="${order.status == 'Đã hủy'}" class="badge bg-danger">
+                                <i class="fas fa-times"></i> <span th:text="${order.status}">Đã hủy</span>
+                            </span>
+                        </p>
+                        <hr>
+                        <h4 class="text-danger">
+                            Tổng: <span th:text="${#numbers.formatDecimal(order.totalMoney, 0, 'COMMA', 0, 'POINT')}">
+                                100,000
+                            </span> đ
+                        </h4>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Order Details -->
+            <div class="col-md-8 mb-4">
+                <div class="card">
+                    <div class="card-header bg-info text-white">
+                        <h5 class="mb-0">Sản phẩm đã đặt</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Sản phẩm</th>
+                                        <th>Đơn giá</th>
+                                        <th>Số lượng</th>
+                                        <th>Thành tiền</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:each="detail : ${orderDetails}">
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <img th:if="${detail.product.image != null}"
+                                                    th:src="@{'/uploads/' + ${detail.product.image}}" alt="Product"
+                                                    style="width: 50px; height: 50px; object-fit: cover; margin-right: 10px;">
+                                                <span th:text="${detail.product.productName}">Tên sản phẩm</span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span
+                                                th:text="${#numbers.formatDecimal(detail.price, 0, 'COMMA', 0, 'POINT')}">
+                                                25,000
+                                            </span> đ
+                                        </td>
+                                        <td th:text="${detail.quantity}">2</td>
+                                        <td class="text-danger fw-bold">
+                                            <span
+                                                th:text="${#numbers.formatDecimal(detail.price * detail.quantity, 0, 'COMMA', 0, 'POINT')}">
+                                                50,000
+                                            </span> đ
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div th:replace="~{layout/fragments/daq-user-footer :: footer}"></div>
+</body>
+
+</html>

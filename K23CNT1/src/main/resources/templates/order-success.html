@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đặt hàng thành công - Miki Food</title>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/webjars/font-awesome/css/all.min.css}">
+</head>
+
+<body>
+    <div class="container my-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card shadow">
+                    <div class="card-body text-center py-5">
+                        <i class="fas fa-check-circle text-success" style="font-size: 80px;"></i>
+                        <h2 class="mt-4 mb-3">Đặt hàng thành công!</h2>
+
+                        <div th:if="${orderId}" class="alert alert-info">
+                            <strong>Mã đơn hàng:</strong> <span th:text="${orderId}">1</span>
+                        </div>
+
+                        <p class="text-muted mb-4">
+                            Cảm ơn bạn đã đặt hàng. Đơn hàng của bạn đang được xử lý.
+                        </p>
+
+                        <div class="d-grid gap-2">
+                            <a th:href="@{'/orders/detail/' + ${orderId}}" class="btn btn-primary btn-lg"
+                                th:if="${orderId}">
+                                <i class="fas fa-eye"></i> Xem chi tiết đơn hàng
+                            </a>
+                            <a href="/orders/my-orders" class="btn btn-outline-primary">
+                                <i class="fas fa-list"></i> Xem tất cả đơn hàng
+                            </a>
+                            <a href="/products" class="btn btn-outline-secondary">
+                                <i class="fas fa-shopping-bag"></i> Tiếp tục mua hàng
+                            </a>
+                            <a href="/home" class="btn btn-outline-secondary">
+                                <i class="fas fa-home"></i> Về trang chủ
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+    <script th:src="@{/webjars/bootstrap/js/bootstrap.bundle.min.js}"></script>
+</body>
+
+</html>

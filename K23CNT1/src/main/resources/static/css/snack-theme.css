@@ -1,0 +1,331 @@
+/* ===================================
+   MIKI FOOD - Snack Theme CSS
+   Color Palette: Fun & Colorful
+   =================================== */
+
+:root {
+    /* Primary Colors */
+    --primary-color: #FF6B6B;
+    --primary-dark: #E85555;
+    --primary-light: #FF8787;
+    
+    /* Secondary Colors */
+    --secondary-color: #FFD93D;
+    --secondary-dark: #F5C518;
+    --secondary-light: #FFE066;
+    
+    /* Accent Colors */
+    --accent-green: #6BCB77;
+    --accent-blue: #4ECDC4;
+    --accent-purple: #A78BFA;
+    
+    /* Neutral Colors */
+    --dark: #2D3436;
+    --gray: #636E72;
+    --light-gray: #DFE6E9;
+    --bg-light: #F8F9FA;
+    --white: #FFFFFF;
+    
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, #FF6B6B 0%, #FFD93D 100%);
+    --gradient-secondary: linear-gradient(135deg, #6BCB77 0%, #4ECDC4 100%);
+    --gradient-hero: linear-gradient(135deg, #FF6B6B 0%, #FF8787 50%, #FFD93D 100%);
+    
+    /* Shadows */
+    --shadow-sm: 0 2px 4px rgba(0,0,0,0.1);
+    --shadow-md: 0 4px 8px rgba(0,0,0,0.15);
+    --shadow-lg: 0 8px 16px rgba(0,0,0,0.2);
+    --shadow-xl: 0 12px 24px rgba(0,0,0,0.25);
+    
+    /* Border Radius */
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --radius-xl: 24px;
+    --radius-full: 9999px;
+    
+    /* Transitions */
+    --transition-fast: 0.2s ease;
+    --transition-normal: 0.3s ease;
+    --transition-slow: 0.5s ease;
+}
+
+/* ===================================
+   Typography
+   =================================== */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap');
+
+body {
+    font-family: 'Inter', sans-serif;
+    color: var(--dark);
+    background-color: var(--bg-light);
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+}
+
+/* ===================================
+   Buttons
+   =================================== */
+.btn-snack-primary {
+    background: var(--gradient-primary);
+    border: none;
+    color: white;
+    font-weight: 600;
+    padding: 12px 24px;
+    border-radius: var(--radius-full);
+    transition: all var(--transition-normal);
+    box-shadow: var(--shadow-md);
+}
+
+.btn-snack-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+    color: white;
+}
+
+.btn-snack-secondary {
+    background: var(--gradient-secondary);
+    border: none;
+    color: white;
+    font-weight: 600;
+    padding: 12px 24px;
+    border-radius: var(--radius-full);
+    transition: all var(--transition-normal);
+    box-shadow: var(--shadow-md);
+}
+
+.btn-snack-secondary:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+    color: white;
+}
+
+/* ===================================
+   Cards
+   =================================== */
+.snack-card {
+    background: white;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    transition: all var(--transition-normal);
+    overflow: hidden;
+}
+
+.snack-card:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-xl);
+}
+
+.snack-card-header {
+    background: var(--gradient-primary);
+    color: white;
+    padding: 16px 20px;
+    font-weight: 600;
+}
+
+/* ===================================
+   Product Cards
+   =================================== */
+.product-card {
+    position: relative;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    transition: all var(--transition-normal);
+}
+
+.product-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: var(--shadow-xl);
+}
+
+.product-card img {
+    transition: transform var(--transition-slow);
+}
+
+.product-card:hover img {
+    transform: scale(1.1);
+}
+
+.product-badge {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: var(--gradient-primary);
+    color: white;
+    padding: 6px 12px;
+    border-radius: var(--radius-full);
+    font-size: 0.85rem;
+    font-weight: 600;
+    box-shadow: var(--shadow-md);
+}
+
+/* ===================================
+   Animations
+   =================================== */
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideInRight {
+    from { opacity: 0; transform: translateX(50px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+.animate-bounce {
+    animation: bounce 2s infinite;
+}
+
+.animate-fade-in {
+    animation: fadeIn 0.6s ease-out;
+}
+
+.animate-slide-in {
+    animation: slideInRight 0.6s ease-out;
+}
+
+/* ===================================
+   Navbar
+   =================================== */
+.navbar-snack {
+    background: var(--gradient-hero);
+    box-shadow: var(--shadow-lg);
+    padding: 12px 0;
+}
+
+.navbar-snack .navbar-brand {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: white !important;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+}
+
+.navbar-snack .nav-link {
+    color: rgba(255,255,255,0.95) !important;
+    font-weight: 600;
+    padding: 8px 16px !important;
+    margin: 0 4px;
+    border-radius: var(--radius-full);
+    transition: all var(--transition-fast);
+}
+
+.navbar-snack .nav-link:hover {
+    background: rgba(255,255,255,0.2);
+    transform: translateY(-2px);
+}
+
+.cart-badge {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background: var(--accent-green);
+    color: white;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+    font-weight: 700;
+}
+
+/* ===================================
+   Footer
+   =================================== */
+.footer-snack {
+    background: var(--dark);
+    color: white;
+    padding: 60px 0 20px;
+    margin-top: 80px;
+}
+
+.footer-snack h5 {
+    color: var(--secondary-color);
+    margin-bottom: 20px;
+}
+
+.footer-snack a {
+    color: rgba(255,255,255,0.7);
+    transition: all var(--transition-fast);
+}
+
+.footer-snack a:hover {
+    color: var(--secondary-color);
+    transform: translateX(5px);
+}
+
+.social-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 45px;
+    height: 45px;
+    background: var(--gradient-primary);
+    border-radius: 50%;
+    color: white;
+    font-size: 1.2rem;
+    transition: all var(--transition-normal);
+    box-shadow: var(--shadow-md);
+}
+
+.social-icon:hover {
+    transform: translateY(-5px) rotate(10deg);
+    box-shadow: var(--shadow-lg);
+}
+
+/* ===================================
+   Hero Section
+   =================================== */
+.hero-snack {
+    background: var(--gradient-hero);
+    padding: 80px 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-snack::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="%23ffffff" fill-opacity="0.1" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,122.7C672,117,768,139,864,138.7C960,139,1056,117,1152,101.3C1248,85,1344,75,1392,69.3L1440,64L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>') no-repeat bottom;
+    background-size: cover;
+}
+
+.hero-snack h1 {
+    font-size: 3.5rem;
+    color: white;
+    text-shadow: 3px 3px 6px rgba(0,0,0,0.3);
+    margin-bottom: 20px;
+}
+
+.hero-snack p {
+    font-size: 1.3rem;
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+}
+
+/* ===================================
+   Responsive
+   =================================== */
+@media (max-width: 768px) {
+    .hero-snack h1 {
+        font-size: 2.5rem;
+    }
+    
+    .navbar-snack .navbar-brand {
+        font-size: 1.5rem;
+    }
+}

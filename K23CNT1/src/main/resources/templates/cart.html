@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giỏ hàng - Miki Food</title>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/webjars/font-awesome/css/all.min.css}">
+</head>
+
+<body>
+    <div class="container my-5">
+        <h2 class="mb-4"><i class="fas fa-shopping-cart"></i> Giỏ hàng của bạn</h2>
+
+        <!-- Alert Messages -->
+        <div th:if="${success}" class="alert alert-success alert-dismissible fade show">
+            <i class="fas fa-check-circle"></i> <span th:text="${success}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+        <div th:if="${error}" class="alert alert-danger alert-dismissible fade show">
+            <i class="fas fa-exclamation-circle"></i> <span th:text="${error}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+
+        <!-- Cart Items -->
+        <div th:if="${cartSize > 0}">
+            <div class="card">
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th style="width: 100px;">Hình ảnh</th>
+                                    <th>Tên sản phẩm</th>
+                                    <th style="width: 150px;">Đơn giá</th>
+                                    <th style="width: 150px;">Số lượng</th>
+                                    <th style="width: 150px;">Thành tiền</th>
+                                    <th style="width: 100px;">Thao tác</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="item : ${cartItems}">
+                                    <td>
+                                        <img th:if="${item.image != null}" th:src="@{'/uploads/' + ${item.image}}"
+                                            alt="Product" class="img-thumbnail"
+                                            style="width: 60px; height: 60px; object-fit: cover;">
+                                    </td>
+                                    <td>
+                                        <span class="fw-medium" th:text="${item.productName}">Sản phẩm</span>
+                                    </td>
+                                    <td class="text-danger">
+                                        <span
+                                            th:text="${#numbers.formatDecimal(item.price, 0, 'COMMA', 0, 'POINT')}">25,000</span>
+                                        đ
+                                    </td>
+                                    <td>
+                                        <form th:action="@{/cart/update}" method="post"
+                                            class="d-flex align-items-center">
+                                            <input type="hidden" name="productId" th:value="${item.productId}">
+                                            <input type="number" name="quantity" th:value="${item.quantity}" min="1"
+                                                class="form-control form-control-sm" style="width: 70px;">
+                                            <button type="submit" class="btn btn-sm btn-primary ms-2">
+                                                <i class="fas fa-sync"></i>
+                                            </button>
+                                        </form>
+                                    </td>
+                                    <td class="fw-bold text-danger">
+                                        <span
+                                            th:text="${#numbers.formatDecimal(item.subtotal, 0, 'COMMA', 0, 'POINT')}">50,000</span>
+                                        đ
+                                    </td>
+                                    <td>
+                                        <a th:href="@{'/cart/remove/' + ${item.productId}}"
+                                            class="btn btn-sm btn-outline-danger"
+                                            onclick="return confirm('Xóa sản phẩm này?')">
+                                            <i class="fas fa-trash"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                            <tfoot class="table-light">
+                                <tr>
+                                    <th colspan="4" class="text-end">Tổng cộng:</th>
+                                    <th class="text-danger fs-5">
+                                        <span
+                                            th:text="${#numbers.formatDecimal(total, 0, 'COMMA', 0, 'POINT')}">150,000</span>
+                                        đ
+                                    </th>
+                                    <th></th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="d-flex justify-content-between mt-4">
+                <div>
+                    <a href="/products" class="btn btn-outline-secondary">
+                        <i class="fas fa-arrow-left"></i> Tiếp tục mua hàng
+                    </a>
+                    <a href="/cart/clear" class="btn btn-outline-danger"
+                        onclick="return confirm('Xóa toàn bộ giỏ hàng?')">
+                        <i class="fas fa-trash"></i> Xóa giỏ hàng
+                    </a>
+                </div>
+                <a href="/orders/checkout" class="btn btn-primary btn-lg">
+                    <i class="fas fa-credit-card"></i> Thanh toán
+                </a>
+            </div>
+        </div>
+
+        <!-- Empty Cart -->
+        <div th:if="${cartSize == 0}" class="text-center py-5">
+            <i class="fas fa-shopping-cart fa-5x text-muted mb-3"></i>
+            <h4 class="text-muted">Giỏ hàng trống</h4>
+            <p class="text-muted">Hãy thêm sản phẩm vào giỏ hàng để tiếp tục</p>
+            <a href="/products" class="btn btn-primary">
+                <i class="fas fa-shopping-bag"></i> Mua sắm ngay
+            </a>
+        </div>
+    </div>
+
+    <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+    <script th:src="@{/webjars/bootstrap/js/bootstrap.bundle.min.js}"></script>
+</body>
+
+</html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{layout/admin-layout :: head}"></head>
+
+<body>
+    <div th:replace="~{layout/fragments/daq-admin-nav :: sidebar}"></div>
+
+    <div class="main-content">
+        <div th:replace="~{layout/fragments/daq-admin-nav :: navbar}"></div>
+
+        <main class="content-area">
+            <div class="mb-4">
+                <h1 class="h3 fw-bold text-dark">Thêm Chi tiết Đơn hàng</h1>
+                <p class="text-muted">Thêm sản phẩm vào đơn hàng</p>
+            </div>
+
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="card">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="mb-0"><i class="fas fa-plus"></i> Thông tin chi tiết</h5>
+                        </div>
+                        <div class="card-body">
+                            <form th:action="@{/admin/daqOrderDetails/store}" method="post">
+                                <div class="mb-3">
+                                    <label for="orderId" class="form-label">
+                                        Đơn hàng <span class="text-danger">*</span>
+                                    </label>
+                                    <select class="form-select" id="orderId" name="orderId" required>
+                                        <option value="">-- Chọn đơn hàng --</option>
+                                        <option th:each="order : ${orders}" th:value="${order.orderId}"
+                                            th:text="'#' + ${order.orderId} + ' - ' + ${#temporals.format(order.orderDate, 'dd/MM/yyyy')} + ' - ' + ${#numbers.formatDecimal(order.totalMoney, 0, 'COMMA', 0, 'POINT')} + 'đ'">
+                                            Đơn hàng
+                                        </option>
+                                    </select>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="productId" class="form-label">
+                                        Sản phẩm <span class="text-danger">*</span>
+                                    </label>
+                                    <select class="form-select" id="productId" name="productId" required>
+                                        <option value="">-- Chọn sản phẩm --</option>
+                                        <option th:each="product : ${products}" th:value="${product.productId}"
+                                            th:text="${product.productName} + ' - ' + ${#numbers.formatDecimal(product.price, 0, 'COMMA', 0, 'POINT')} + 'đ'">
+                                            Sản phẩm
+                                        </option>
+                                    </select>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="quantity" class="form-label">
+                                        Số lượng <span class="text-danger">*</span>
+                                    </label>
+                                    <input type="number" class="form-control" id="quantity" name="quantity" required
+                                        min="1" value="1">
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="price" class="form-label">
+                                        Đơn giá <span class="text-danger">*</span>
+                                    </label>
+                                    <input type="number" class="form-control" id="price" name="price" required min="0"
+                                        step="1000">
+                                    <div class="form-text">Giá bán của sản phẩm (VNĐ)</div>
+                                </div>
+
+                                <div class="d-flex gap-2">
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="fas fa-save"></i> Lưu
+                                    </button>
+                                    <a href="/admin/daqOrderDetails" class="btn btn-secondary">
+                                        <i class="fas fa-times"></i> Hủy
+                                    </a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <div th:replace="~{layout/fragments/daq-admin-footer :: footer}"></div>
+    </div>
+
+    <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+    <script th:src="@{/webjars/bootstrap/js/bootstrap.bundle.min.js}"></script>
+</body>
+
+</html>

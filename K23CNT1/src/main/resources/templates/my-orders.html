@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{layout/user-layout :: head}"></head>
+
+<body>
+    <!-- Navbar -->
+    <div th:replace="~{layout/fragments/daq-user-nav :: navbar}"></div>
+
+    <!-- Main Content Wrapper -->
+    <div style="min-height: calc(100vh - 400px);">
+        <!-- Main Content -->
+        <div class="container my-5">
+            <h2 class="mb-4">
+                <i class="fas fa-receipt"></i> Đơn hàng của tôi
+            </h2>
+
+            <!-- Alert Messages -->
+            <div th:if="${success}" class="alert alert-success alert-dismissible fade show">
+                <i class="fas fa-check-circle"></i> <span th:text="${success}"></span>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+            <div th:if="${error}" class="alert alert-danger alert-dismissible fade show">
+                <i class="fas fa-exclamation-circle"></i> <span th:text="${error}"></span>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+
+            <!-- Orders List -->
+            <div class="card">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Mã đơn</th>
+                                    <th>Ngày đặt</th>
+                                    <th>Tổng tiền</th>
+                                    <th>Trạng thái</th>
+                                    <th>Thao tác</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="order : ${orders}">
+                                    <td><strong>#<span th:text="${order.orderId}">1</span></strong></td>
+                                    <td th:text="${#temporals.format(order.orderDate, 'dd/MM/yyyy HH:mm')}">
+                                        30/12/2025 10:00
+                                    </td>
+                                    <td class="text-danger fw-bold">
+                                        <span
+                                            th:text="${#numbers.formatDecimal(order.totalMoney, 0, 'COMMA', 0, 'POINT')}">
+                                            100,000
+                                        </span> đ
+                                    </td>
+                                    <td>
+                                        <span th:if="${order.status == 'Chờ xử lý'}" class="badge bg-warning text-dark">
+                                            <i class="fas fa-clock"></i> <span th:text="${order.status}">Chờ xử
+                                                lý</span>
+                                        </span>
+                                        <span th:if="${order.status == 'Đang giao'}" class="badge bg-info">
+                                            <i class="fas fa-truck"></i> <span th:text="${order.status}">Đang
+                                                giao</span>
+                                        </span>
+                                        <span th:if="${order.status == 'Hoàn thành'}" class="badge bg-success">
+                                            <i class="fas fa-check"></i> <span th:text="${order.status}">Hoàn
+                                                thành</span>
+                                        </span>
+                                        <span th:if="${order.status == 'Đã hủy'}" class="badge bg-danger">
+                                            <i class="fas fa-times"></i> <span th:text="${order.status}">Đã hủy</span>
+                                        </span>
+                                        <span
+                                            th:if="${order.status != 'Chờ xử lý' and order.status != 'Đang giao' and order.status != 'Hoàn thành' and order.status != 'Đã hủy'}"
+                                            class="badge bg-secondary" th:text="${order.status}">
+                                            Khác
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <a th:href="@{'/orders/detail/' + ${order.orderId}}"
+                                            class="btn btn-sm btn-primary">
+                                            <i class="fas fa-eye"></i> Chi tiết
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Empty State -->
+                    <div th:if="${#lists.isEmpty(orders)}" class="text-center py-5">
+                        <i class="fas fa-shopping-bag fa-5x text-muted mb-3"></i>
+                        <h4 class="text-muted">Bạn chưa có đơn hàng nào</h4>
+                        <a href="/products" class="btn btn-primary mt-3">
+                            <i class="fas fa-shopping-cart"></i> Mua sắm ngay
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div th:replace="~{layout/fragments/daq-user-footer :: footer}"></div>
+</body>
+
+</html>

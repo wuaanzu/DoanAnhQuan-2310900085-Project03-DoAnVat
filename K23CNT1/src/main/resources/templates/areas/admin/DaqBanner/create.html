@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{layout/admin-layout :: head}"></head>
+
+<body>
+    <div th:replace="~{layout/fragments/daq-admin-nav :: sidebar}"></div>
+
+    <div class="main-content">
+        <div th:replace="~{layout/fragments/daq-admin-nav :: navbar}"></div>
+
+        <main class="content-area">
+            <div class="mb-4">
+                <h1 class="h3 fw-bold text-dark">Thêm Banner mới</h1>
+            </div>
+
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="card">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="mb-0"><i class="fas fa-plus"></i> Thông tin Banner</h5>
+                        </div>
+                        <div class="card-body">
+                            <form th:action="@{/admin/daqBanner/store}" method="post" enctype="multipart/form-data">
+                                <div class="mb-3">
+                                    <label for="title" class="form-label">
+                                        Tiêu đề <span class="text-danger">*</span>
+                                    </label>
+                                    <input type="text" class="form-control" id="title" name="title" required>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="description" class="form-label">Mô tả</label>
+                                    <textarea class="form-control" id="description" name="description"
+                                        rows="3"></textarea>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="imageFile" class="form-label">
+                                        Hình ảnh <span class="text-danger">*</span>
+                                    </label>
+                                    <input type="file" class="form-control" id="imageFile" name="imageFile"
+                                        accept="image/*" required>
+                                    <small class="text-muted">Kích thước khuyến nghị: 1200x400px</small>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="linkUrl" class="form-label">Link URL</label>
+                                    <input type="text" class="form-control" id="linkUrl" name="linkUrl"
+                                        placeholder="/products">
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="category" class="form-label">Danh mục (tùy chọn)</label>
+                                    <select class="form-select" id="category" name="category.categoryId">
+                                        <option value="">-- Không liên kết --</option>
+                                        <option th:each="cat : ${categories}" th:value="${cat.categoryId}"
+                                            th:text="${cat.categoryName}">
+                                            Danh mục
+                                        </option>
+                                    </select>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="displayOrder" class="form-label">Thứ tự hiển thị</label>
+                                        <input type="number" class="form-control" id="displayOrder" name="displayOrder"
+                                            value="1" min="1">
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="isActive" class="form-label">Trạng thái</label>
+                                        <select class="form-select" id="isActive" name="isActive">
+                                            <option value="true" selected>Hiển thị</option>
+                                            <option value="false">Ẩn</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="d-flex gap-2">
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="fas fa-save"></i> Lưu
+                                    </button>
+                                    <a href="/admin/daqBanner" class="btn btn-secondary">
+                                        <i class="fas fa-times"></i> Hủy
+                                    </a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <div th:replace="~{layout/fragments/daq-admin-footer :: footer}"></div>
+    </div>
+
+    <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+    <script th:src="@{/webjars/bootstrap/js/bootstrap.bundle.min.js}"></script>
+</body>
+
+</html>

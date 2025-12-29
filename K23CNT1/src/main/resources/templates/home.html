@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{layout/user-layout :: head}"></head>
+
+<body>
+    <!-- Navbar -->
+    <div th:replace="~{layout/fragments/daq-user-nav :: navbar}"></div>
+
+    <!-- Hero Section -->
+    <div class="hero-snack">
+        <div class="container text-center py-5 position-relative">
+            <h1 class="display-3 fw-bold animate-fade-in">
+                <i class="fas fa-cookie-bite"></i> Chào mừng đến Miki Food
+            </h1>
+            <p class="lead mb-4 animate-fade-in" style="animation-delay: 0.2s;">
+                Đồ ăn vặt ngon, chất lượng, giá tốt - Mang niềm vui đến mọi nhà!
+            </p>
+            <div class="animate-fade-in" style="animation-delay: 0.4s;">
+                <a href="/products" class="btn btn-snack-primary btn-lg me-3">
+                    <i class="fas fa-shopping-bag"></i> Mua sắm ngay
+                </a>
+                <a href="#featured" class="btn btn-light btn-lg">
+                    <i class="fas fa-star"></i> Sản phẩm nổi bật
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Featured Products -->
+    <div class="container my-5" id="featured">
+        <div class="text-center mb-5 animate-fade-in">
+            <h2 class="display-5 fw-bold" style="color: var(--primary-color);">
+                <i class="fas fa-star"></i> Sản phẩm nổi bật
+            </h2>
+            <p class="text-muted">Những món ăn vặt được yêu thích nhất</p>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-3 col-sm-6 animate-fade-in" th:each="product, iterStat : ${featuredProducts}"
+                th:style="'animation-delay: ' + ${iterStat.index * 0.1} + 's;'">
+                <div class="card snack-card product-card h-100 border-0">
+                    <div class="position-relative">
+                        <img th:if="${product.image != null}" th:src="@{'/uploads/' + ${product.image}}"
+                            class="card-img-top" alt="Product" style="height: 200px; object-fit: cover;">
+                        <img th:if="${product.image == null}" src="https://via.placeholder.com/300x200?text=No+Image"
+                            class="card-img-top" alt="No Image" style="height: 200px; object-fit: cover;">
+                        <span class="product-badge">HOT</span>
+                    </div>
+
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title fw-bold" th:text="${product.productName}">Tên sản phẩm</h5>
+
+                        <div class="mt-auto">
+                            <h4 class="fw-bold mb-3" style="color: var(--primary-color);">
+                                <span th:text="${#numbers.formatDecimal(product.price, 0, 'COMMA', 0, 'POINT')}">
+                                    25,000
+                                </span> đ
+                            </h4>
+
+                            <a th:href="@{'/products/detail/' + ${product.productId}}"
+                                class="btn btn-snack-primary w-100">
+                                <i class="fas fa-eye"></i> Xem chi tiết
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center mt-5">
+            <a href="/products" class="btn btn-snack-secondary btn-lg">
+                <i class="fas fa-th"></i> Xem tất cả sản phẩm
+            </a>
+        </div>
+    </div>
+
+    <!-- Features Section -->
+    <div class="py-5" style="background: linear-gradient(135deg, #F8F9FA 0%, #E9ECEF 100%);">
+        <div class="container">
+            <div class="row text-center g-4">
+                <div class="col-md-4 animate-fade-in">
+                    <div class="p-4">
+                        <div class="mb-3" style="color: var(--primary-color);">
+                            <i class="fas fa-shipping-fast fa-4x"></i>
+                        </div>
+                        <h5 class="fw-bold">Giao hàng nhanh</h5>
+                        <p class="text-muted">Giao hàng trong 24h<br>Miễn phí ship đơn > 200k</p>
+                    </div>
+                </div>
+                <div class="col-md-4 animate-fade-in" style="animation-delay: 0.2s;">
+                    <div class="p-4">
+                        <div class="mb-3" style="color: var(--accent-green);">
+                            <i class="fas fa-shield-alt fa-4x"></i>
+                        </div>
+                        <h5 class="fw-bold">Chất lượng đảm bảo</h5>
+                        <p class="text-muted">Sản phẩm chính hãng 100%<br>Đổi trả trong 7 ngày</p>
+                    </div>
+                </div>
+                <div class="col-md-4 animate-fade-in" style="animation-delay: 0.4s;">
+                    <div class="p-4">
+                        <div class="mb-3" style="color: var(--accent-blue);">
+                            <i class="fas fa-headset fa-4x"></i>
+                        </div>
+                        <h5 class="fw-bold">Hỗ trợ 24/7</h5>
+                        <p class="text-muted">Luôn sẵn sàng hỗ trợ<br>Hotline: 1900 6886</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div th:replace="~{layout/fragments/daq-user-footer :: footer}"></div>
+</body>
+
+</html>

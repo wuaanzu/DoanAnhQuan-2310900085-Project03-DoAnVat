@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{layout/admin-layout :: head}"></head>
+
+<body>
+    <!-- Sidebar -->
+    <div th:replace="~{layout/fragments/daq-admin-nav :: sidebar}"></div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Top Navbar -->
+        <div th:replace="~{layout/fragments/daq-admin-nav :: navbar}"></div>
+
+        <!-- Content Area -->
+        <main class="content-area">
+            <!-- Page Header -->
+            <div class="mb-4">
+                <h1 class="h3 fw-bold text-dark">Cập nhật trạng thái đơn hàng</h1>
+                <p class="text-muted">Mã đơn hàng: <strong th:text="${order.orderId}">1</strong></p>
+            </div>
+
+            <!-- Edit Form -->
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="mb-0"><i class="fas fa-edit"></i> Cập nhật trạng thái</h5>
+                        </div>
+                        <div class="card-body">
+                            <form th:action="@{'/admin/daqOrders/update/' + ${order.orderId}}" method="post">
+                                <!-- Current Info -->
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">Thông tin đơn hàng</label>
+                                    <table class="table table-sm table-borderless">
+                                        <tr>
+                                            <th style="width: 120px;">Mã ĐH:</th>
+                                            <td th:text="${order.orderId}">1</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Nhân viên:</th>
+                                            <td th:text="${order.staff != null ? order.staff.staffName : 'N/A'}">Nhân
+                                                viên</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Tổng tiền:</th>
+                                            <td class="text-danger fw-bold">
+                                                <span
+                                                    th:text="${#numbers.formatDecimal(order.totalMoney, 0, 'COMMA', 0, 'POINT')}">
+                                                    150,000
+                                                </span> đ
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+
+                                <hr>
+
+                                <!-- Status Select -->
+                                <div class="mb-3">
+                                    <label for="status" class="form-label fw-bold">
+                                        Trạng thái <span class="text-danger">*</span>
+                                    </label>
+                                    <select class="form-select" id="status" name="status" required>
+                                        <option value="Chờ xử lý" th:selected="${order.status == 'Chờ xử lý'}">
+                                            Chờ xử lý
+                                        </option>
+                                        <option value="Đang giao" th:selected="${order.status == 'Đang giao'}">
+                                            Đang giao
+                                        </option>
+                                        <option value="Hoàn thành" th:selected="${order.status == 'Hoàn thành'}">
+                                            Hoàn thành
+                                        </option>
+                                        <option value="Hủy" th:selected="${order.status == 'Hủy'}">
+                                            Hủy
+                                        </option>
+                                    </select>
+                                    <div class="form-text">
+                                        Chọn trạng thái mới cho đơn hàng
+                                    </div>
+                                </div>
+
+                                <!-- Buttons -->
+                                <div class="d-flex gap-2">
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="fas fa-save"></i> Lưu thay đổi
+                                    </button>
+                                    <a th:href="@{'/admin/daqOrders/view/' + ${order.orderId}}"
+                                        class="btn btn-secondary">
+                                        <i class="fas fa-times"></i> Hủy
+                                    </a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Status Guide -->
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header bg-info text-white">
+                            <h5 class="mb-0"><i class="fas fa-info-circle"></i> Hướng dẫn trạng thái</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <span class="badge bg-warning text-dark mb-2">Chờ xử lý</span>
+                                <p class="small mb-0">Đơn hàng mới, chưa được xử lý</p>
+                            </div>
+                            <hr>
+                            <div class="mb-3">
+                                <span class="badge bg-info mb-2">Đang giao</span>
+                                <p class="small mb-0">Đơn hàng đang được giao đến khách hàng</p>
+                            </div>
+                            <hr>
+                            <div class="mb-3">
+                                <span class="badge bg-success mb-2">Hoàn thành</span>
+                                <p class="small mb-0">Đơn hàng đã giao thành công</p>
+                            </div>
+                            <hr>
+                            <div>
+                                <span class="badge bg-danger mb-2">Hủy</span>
+                                <p class="small mb-0">Đơn hàng đã bị hủy</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <div th:replace="~{layout/fragments/daq-admin-footer :: footer}"></div>
+    </div>
+
+    <!-- Scripts -->
+    <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+    <script th:src="@{/webjars/bootstrap/js/bootstrap.bundle.min.js}"></script>
+</body>
+
+</html>

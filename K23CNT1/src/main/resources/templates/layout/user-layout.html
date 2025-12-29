@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head th:fragment="head">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Miki Food - Đồ ăn vặt ngon</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" th:href="@{/webjars/font-awesome/css/all.min.css}">
+    <!-- Custom Snack Theme -->
+    <link rel="stylesheet" th:href="@{/css/snack-theme.css}">
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .content-wrapper {
+            flex: 1;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="col-md-4 mb-3">
+        <h6>Liên kết</h6>
+        <ul class="list-unstyled">
+            <li><a href="/home">Trang chủ</a></li>
+            <li><a href="/products">Sản phẩm</a></li>
+            <li><a href="/about">Giới thiệu</a></li>
+        </ul>
+    </div>
+    <div class="col-md-4 mb-3">
+        <h6>Liên hệ</h6>
+        <p class="text-muted">
+            <i class="fas fa-envelope"></i> contact@mikifood.com<br>
+            <i class="fas fa-phone"></i> 0123 456 789
+        </p>
+    </div>
+    </div>
+    <hr class="bg-light">
+    <div class="text-center text-muted">
+        <p class="mb-0">© 2025 Miki Food. Quản lý bởi Đoàn Anh Quân - K23CNT1</p>
+    </div>
+    </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+    <script th:src="@{/webjars/bootstrap/js/bootstrap.bundle.min.js}"></script>
+</body>
+
+</html>

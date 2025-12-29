@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Truy cập bị từ chối - Miki Food</title>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/webjars/font-awesome/css/all.min.css}">
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .error-card {
+            max-width: 500px;
+            width: 100%;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            padding: 50px;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="error-card">
+        <i class="fas fa-ban text-danger" style="font-size: 80px;"></i>
+        <h2 class="mt-4 mb-3">Truy cập bị từ chối</h2>
+        <p class="text-muted mb-4">
+            Bạn không có quyền truy cập vào trang này.
+        </p>
+        <div class="d-grid gap-2">
+            <a href="/home" class="btn btn-primary">
+                <i class="fas fa-home"></i> Về trang chủ
+            </a>
+            <a href="/logout" class="btn btn-outline-secondary">
+                <i class="fas fa-sign-out-alt"></i> Đăng xuất
+            </a>
+        </div>
+    </div>
+
+    <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+    <script th:src="@{/webjars/bootstrap/js/bootstrap.bundle.min.js}"></script>
+</body>
+
+</html>

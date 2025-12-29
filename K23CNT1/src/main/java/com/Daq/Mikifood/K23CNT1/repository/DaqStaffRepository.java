@@ -10,5 +10,8 @@ import java.util.Optional;
 @Repository
 public interface DaqStaffRepository extends JpaRepository<DaqStaff, Integer> {
     Optional<DaqStaff> findByPhone(String phone);
+
     List<DaqStaff> findByRole(String role);
+
+    Optional<DaqStaff> findByUsername(String username);
 }

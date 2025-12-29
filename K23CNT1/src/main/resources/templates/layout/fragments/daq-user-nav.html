@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<!-- Top Navbar -->
+<nav th:fragment="navbar" class="navbar navbar-expand-lg navbar-snack sticky-top">
+    <div class="container-fluid px-3">
+        <a class="navbar-brand animate-bounce" href="/home">
+            <i class="fas fa-cookie-bite"></i> MIKI FOOD
+        </a>
+
+        <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <!-- Search Form -->
+            <form class="d-flex mx-auto my-2 my-lg-0" action="/products/search" method="get"
+                style="max-width: 300px; flex: 0 1 300px;">
+                <div class="input-group input-group-sm">
+                    <input type="text" class="form-control" name="keyword" placeholder="Tìm kiếm..."
+                        th:value="${keyword}"
+                        style="border-radius: 20px 0 0 20px; border: 2px solid rgba(255,255,255,0.3); background: rgba(255,255,255,0.9); font-size: 0.875rem;">
+                    <button class="btn btn-light btn-sm" type="submit"
+                        style="border-radius: 0 20px 20px 0; border: 2px solid rgba(255,255,255,0.3); border-left: none; padding: 0.25rem 0.75rem;">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </form>
+
+            <ul class="navbar-nav ms-auto align-items-center">
+                <li class="nav-item">
+                    <a class="nav-link px-2" href="/home">
+                        <i class="fas fa-home"></i> <span class="d-none d-xl-inline">TRANG CHỦ</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link px-2" href="/products">
+                        <i class="fas fa-shopping-bag"></i> <span class="d-none d-xl-inline">SẢN PHẨM</span>
+                    </a>
+                </li>
+
+                <!-- Authenticated Users -->
+                <li class="nav-item position-relative" sec:authorize="isAuthenticated()">
+                    <a class="nav-link px-2" href="/cart">
+                        <i class="fas fa-shopping-cart"></i> <span class="d-none d-xl-inline">GIỎ HÀNG</span>
+                        <span class="cart-badge">0</span>
+                    </a>
+                </li>
+                <li class="nav-item" sec:authorize="isAuthenticated()">
+                    <a class="nav-link px-2" href="/orders/my-orders">
+                        <i class="fas fa-receipt"></i> <span class="d-none d-xl-inline">ĐƠN HÀNG</span>
+                    </a>
+                </li>
+
+                <!-- Admin Link -->
+                <li class="nav-item" sec:authorize="hasRole('ADMIN')">
+                    <a class="nav-link px-2" href="/admin/dashboard"
+                        style="background: rgba(255,255,255,0.3); border-radius: 20px; padding: 0.25rem 0.75rem;">
+                        <i class="fas fa-cog"></i> <span class="d-none d-lg-inline">ADMIN</span>
+                    </a>
+                </li>
+
+                <!-- User Info & Logout -->
+                <li class="nav-item" sec:authorize="isAuthenticated()">
+                    <span class="nav-link px-2" style="font-size: 0.875rem;">
+                        <i class="fas fa-user-circle"></i>
+                        <span class="d-none d-lg-inline" sec:authentication="name">User</span>
+                    </span>
+                </li>
+                <li class="nav-item" sec:authorize="isAuthenticated()">
+                    <form th:action="@{/logout}" method="post" class="d-inline">
+                        <button type="submit" class="btn btn-light btn-sm rounded-pill"
+                            style="padding: 0.25rem 0.75rem; font-size: 0.875rem;">
+                            <i class="fas fa-sign-out-alt"></i> <span class="d-none d-lg-inline">ĐĂNG XUẤT</span>
+                        </button>
+                    </form>
+                </li>
+
+                <!-- Login/Register -->
+                <li class="nav-item" sec:authorize="!isAuthenticated()">
+                    <a class="btn btn-light btn-sm rounded-pill me-1" href="/login"
+                        style="padding: 0.25rem 0.75rem; font-size: 0.875rem;">
+                        <i class="fas fa-sign-in-alt"></i> <span class="d-none d-lg-inline">ĐĂNG NHẬP</span>
+                    </a>
+                </li>
+                <li class="nav-item" sec:authorize="!isAuthenticated()">
+                    <a class="btn btn-warning btn-sm rounded-pill fw-bold" href="/register"
+                        style="padding: 0.25rem 0.75rem; font-size: 0.875rem;">
+                        <i class="fas fa-user-plus"></i> <span class="d-none d-lg-inline">ĐĂNG KÝ</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+</html>

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{layout/user-layout :: head}"></head>
+
+<body>
+    <!-- Navbar -->
+    <div th:replace="~{layout/fragments/daq-user-nav :: navbar}"></div>
+
+    <!-- Main Content -->
+    <div class="container my-5">
+        <!-- Breadcrumb -->
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/home">Trang chủ</a></li>
+                <li class="breadcrumb-item"><a href="/products">Sản phẩm</a></li>
+                <li class="breadcrumb-item active" th:text="${product.productName}">Chi tiết</li>
+            </ol>
+        </nav>
+
+        <!-- Product Detail -->
+        <div class="row">
+            <!-- Product Image -->
+            <div class="col-md-5">
+                <div class="card">
+                    <img th:if="${product.image != null}" th:src="@{'/uploads/' + ${product.image}}"
+                        class="card-img-top" alt="Product" style="width: 100%; height: 400px; object-fit: cover;">
+                    <img th:if="${product.image == null}" src="https://via.placeholder.com/400x400?text=No+Image"
+                        class="card-img-top" alt="No Image" style="width: 100%; height: 400px; object-fit: cover;">
+                </div>
+            </div>
+
+            <!-- Product Info -->
+            <div class="col-md-7">
+                <h2 class="mb-3" th:text="${product.productName}">Tên sản phẩm</h2>
+
+                <div class="mb-3">
+                    <span class="badge bg-info fs-6" th:if="${product.category != null}"
+                        th:text="${product.category.categoryName}">
+                        Danh mục
+                    </span>
+                </div>
+
+                <h3 class="text-danger mb-4">
+                    <span th:text="${#numbers.formatDecimal(product.price, 0, 'COMMA', 0, 'POINT')}">
+                        25,000
+                    </span> đ
+                </h3>
+
+                <div class="mb-4">
+                    <h5>Mô tả sản phẩm:</h5>
+                    <p class="text-muted" th:text="${product.description}">
+                        Mô tả chi tiết về sản phẩm
+                    </p>
+                </div>
+
+                <div class="mb-4">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p><strong>Tình trạng:</strong>
+                                <span th:if="${product.quantity > 0}" class="text-success">
+                                    <i class="fas fa-check-circle"></i> Còn hàng
+                                </span>
+                                <span th:if="${product.quantity == 0}" class="text-danger">
+                                    <i class="fas fa-times-circle"></i> Hết hàng
+                                </span>
+                            </p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong>Số lượng còn:</strong>
+                                <span th:text="${product.quantity}">0</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Add to Cart Form -->
+                <form th:action="@{/cart/add}" method="post" th:if="${product.quantity > 0}">
+                    <input type="hidden" name="productId" th:value="${product.productId}">
+
+                    <div class="row mb-4">
+                        <div class="col-md-4">
+                            <label for="quantity" class="form-label">Số lượng:</label>
+                            <input type="number" class="form-control" id="quantity" name="quantity" value="1" min="1"
+                                th:max="${product.quantity}">
+                        </div>
+                    </div>
+
+                    <div class="d-grid gap-2 d-md-flex">
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            <i class="fas fa-cart-plus"></i> Thêm vào giỏ hàng
+                        </button>
+                        <a href="/products" class="btn btn-outline-secondary btn-lg">
+                            <i class="fas fa-arrow-left"></i> Quay lại
+                        </a>
+                    </div>
+                </form>
+
+                <div th:if="${product.quantity == 0}">
+                    <button class="btn btn-secondary btn-lg" disabled>
+                        <i class="fas fa-times"></i> Sản phẩm đã hết hàng
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Related Products -->
+        <div class="mt-5" th:if="${relatedProducts != null and !#lists.isEmpty(relatedProducts)}">
+            <h4 class="mb-4">Sản phẩm liên quan</h4>
+            <div class="row g-4">
+                <div class="col-md-3" th:each="related : ${relatedProducts}">
+                    <div class="card h-100 shadow-sm">
+                        <img th:if="${related.image != null}" th:src="@{'/uploads/' + ${related.image}}"
+                            class="card-img-top" alt="Product" style="height: 150px; object-fit: cover;">
+                        <div class="card-body">
+                            <h6 class="card-title" th:text="${related.productName}">Sản phẩm</h6>
+                            <p class="text-danger fw-bold">
+                                <span th:text="${#numbers.formatDecimal(related.price, 0, 'COMMA', 0, 'POINT')}">
+                                    25,000
+                                </span> đ
+                            </p>
+                            <a th:href="@{'/products/detail/' + ${related.productId}}"
+                                class="btn btn-sm btn-outline-primary w-100">
+                                Xem chi tiết
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div th:replace="~{layout/fragments/daq-user-footer :: footer}"></div>
+</body>
+
+</html>
